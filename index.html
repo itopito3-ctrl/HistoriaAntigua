@@ -1,390 +1,440 @@
-import React, { useState } from "react";
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Historia Antigua - Culturas Cerámicas Mesopotámicas</title>
+  <style>
+    :root {
+      --primary: #996633;
+      --primary-dark: #7a5229;
+      --secondary: #d4af78;
+      --light: #fff9f0;
+      --gray-light: #f8f9fa;
+      --gray: #adb5bd;
+      --text: #212529;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #fdf6ef, #f8eee7, #fdf6ef);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    header {
+      background-color: var(--primary-dark);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1, h2 { margin: 0.5rem 0; }
+    nav {
+      background: white;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0.5rem 0;
+    }
+    nav .container {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+    }
+    nav button {
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    nav button.active {
+      background-color: var(--primary);
+      color: white;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    nav button:not(.active) {
+      background-color: #f1e8d9;
+      color: var(--primary-dark);
+    }
+    nav button:hover:not(.active) {
+      background-color: var(--secondary);
+      color: white;
+    }
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    article {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h3 {
+      color: var(--primary-dark);
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.75rem;
+      text-align: left;
+    }
+    th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+    tr:nth-child(even) {
+      background-color: #fcfaf7;
+    }
+    .highlight-box {
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+      font-style: italic;
+    }
+    .bg-blue {
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196f3;
+    }
+    .bg-green {
+      background-color: #e8f5e8;
+      border-left: 4px solid #4caf50;
+    }
+    .bg-purple {
+      background-color: #f3e5f5;
+      border-left: 4px solid #9c27b0;
+    }
+    footer {
+      background-color: var(--primary-dark);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 3rem;
+    }
+    .progress-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 1.5rem;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--gray);
+    }
+    .dot.active {
+      background-color: var(--primary);
+      transform: scale(1.2);
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.4rem; }
+      article { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
 
-const App = () => {
-  const [selectedSection, setSelectedSection] = useState("introduccion");
+  <!-- Header -->
+  <header>
+    <h1>Historia Antigua</h1>
+    <h2>Estudio de las culturas cerámicas del calcolítico y neolítico en Mesopotamia</h2>
+    <p>Por Jorge Escoto</p>
+    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.3);">
+      <p>Profesor Antonio J. Ortiz Villarejo</p>
+    </div>
+  </header>
 
-  const sections = [
-    { id: "introduccion", title: "Introducción" },
-    { id: "jarmo", title: "Jarmo" },
-    { id: "hassuna", title: "Cultura Hassuna" },
-    { id: "samarra", title: "Cultura Samarra" },
-    { id: "halaf", title: "Cultura Halaf" },
-    { id: "ubaid", title: "Periodo Ubaid" },
-    { id: "conclusion", title: "Conclusión" }
-  ];
+  <!-- Navigation -->
+  <nav>
+    <div class="container" id="nav-container">
+      <!-- Buttons will be inserted here by JS -->
+    </div>
+  </nav>
 
-  const content = {
-    introduccion: (
-      <div className="space-y-6">
-        <img 
-          src="https://placehold.co/800x400/8B4513/FFFFFF?text=Artefactos+Cerámicos+Antiguos" 
-          alt="Cerámica antigua mesopotámica" 
-          className="w-full h-64 object-cover rounded-lg shadow-md"
-        />
-        <p className="text-lg leading-relaxed">
-          No tenemos muchas herramientas para saber cómo eran las personas del pasado en persona. De hecho, no tenemos ninguna. Lo único que nos queda para conocerlas son las cosas que dejaron atrás. Y al final, eso es exactamente lo que quedará de nosotros: recuerdos y artefactos.
-        </p>
-        <p className="text-lg leading-relaxed">
-          Por eso quiero hablar de algo que, a veces, ni siquiera como arqueólogos pensamos que es tecnología… pero que sin duda cambió el mundo: el uso de la cerámica. Podría decirse que fue una de las primeras tecnologías fundamentales. Y lo curioso es que aún la usamos hoy, y ni siquiera la vemos como "tecnología".
-        </p>
-        <p className="text-lg leading-relaxed">
-          Aunque el uso de la cerámica se remonta al Mesolítico —incluso al Paleolítico, con evidencia de hace unos 20,000 años, o más—, quiero centrarme en su simbolismo durante el Neolítico y el Calcolítico en Mesopotamia. Es decir, entre aproximadamente 8,000 y 3,800 antes de Cristo.
-        </p>
-        <p className="text-lg leading-relaxed">
-          Ya hemos visto en clase culturas como la Hassuna, la Samarra, la Halaf y el periodo Ubaid. Cada una de ellas se distingue por un estilo cerámico único. De hecho, incluso dentro de cada cultura podemos identificar diferentes fases o periodos, lo que nos permite rastrear no solo sus prácticas agrícolas, sino también su organización social e, incluso, sus creencias espirituales.
-        </p>
-      </div>
-    ),
-    jarmo: (
-      <div className="space-y-6">
-        <img 
-          src="https://placehold.co/800x400/2F4F4F/FFFFFF?text=Sitio+arqueológico+de+Jarmo" 
-          alt="Ubicación de Jarmo" 
-          className="w-full h-64 object-cover rounded-lg shadow-md"
-        />
-        <h3 className="text-2xl font-bold text-amber-800">Jarmo</h3>
-        <p className="text-lg leading-relaxed">
-          En el Neolítico, este lugar estaba ubicado en un valle llamado Chemchemal, en Irak, en la región del Kurdistán, cerca de los montes Zagros, a una altitud de más o menos 800 metros. Es uno de los primeros sitios donde sabemos que hubo vida sedentaria.
-        </p>
-        <p className="text-lg leading-relaxed">
-          Fue ocupado aproximadamente entre el 7400 y el 6000 antes de Cristo, y fue excavado principalmente entre 1948 y 1955. Jarmo nos ofrece una vista crucial de la transición de una vida nómada hacia una forma de vida más sedentaria.
-        </p>
-        <p className="text-lg leading-relaxed">
-          Los habitantes de Jarmo fueron de los primeros en cultivar plantas —como cereales— y en domesticar animales. De hecho, podemos asegurar que ya tenían cabras domesticadas. Aprovecharon muy bien un entorno privilegiado: un lugar bien conectado con un río, tierras fértiles y rodeado de bosques, ideal para practicar ganadería y agricultura.
-        </p>
-        <div className="grid md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-amber-50 p-4 rounded-lg">
-            <h4 className="font-semibold text-amber-800 mb-2">Características principales:</h4>
-            <ul className="list-disc list-inside space-y-1 text-sm">
-              <li>Uno de los primeros asentamientos sedentarios</li>
-              <li>Casas de ladrillos de barro rectilíneas</li>
-              <li>Avances significativos en cerámica hecha a mano</li>
-              <li>Uso de cenizas volcánicas en la cerámica (tono gris oscuro)</li>
-              <li>Enfoque en rituales de fertilidad y ciclos estacionales</li>
-            </ul>
+  <!-- Main Content -->
+  <main>
+    <article id="content-area">
+      <!-- Content will be loaded dynamically -->
+    </article>
+
+    <!-- Progress Dots -->
+    <div class="progress-dots" id="dots-container">
+      <!-- Dots generated by JS -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Estudio Arqueológico de Culturas Mesopotámicas</p>
+    <p>Presentación académica - Historia Antigua</p>
+  </footer>
+
+  <script>
+    const sections = [
+      {
+        id: "introduccion",
+        title: "Introducción",
+        content: `
+          <img src="https://placehold.co/800x400/8B4513/FFFFFF?text=Artefactos+Cerámicos+Antiguos" alt="Cerámica antigua mesopotámica">
+          <p>No tenemos muchas herramientas para saber cómo eran las personas del pasado en persona. De hecho, no tenemos ninguna. Lo único que nos queda para conocerlas son las cosas que dejaron atrás. Y al final, eso es exactamente lo que quedará de nosotros: recuerdos y artefactos.</p>
+          <p>Por eso quiero hablar de algo que, a veces, ni siquiera como arqueólogos pensamos que es tecnología… pero que sin duda cambió el mundo: el uso de la cerámica. Podría decirse que fue una de las primeras tecnologías fundamentales. Y lo curioso es que aún la usamos hoy, y ni siquiera la vemos como "tecnología".</p>
+          <p>Aunque el uso de la cerámica se remonta al Mesolítico —incluso al Paleolítico, con evidencia de hace unos 20,000 años, o más—, quiero centrarme en su simbolismo durante el Neolítico y el Calcolítico en Mesopotamia. Es decir, entre aproximadamente 8,000 y 3,800 antes de Cristo.</p>
+          <p>Ya hemos visto en clase culturas como la Hassuna, la Samarra, la Halaf y el periodo Ubaid. Cada una de ellas se distingue por un estilo cerámico único. De hecho, incluso dentro de cada cultura podemos identificar diferentes fases o periodos, lo que nos permite rastrear no solo sus prácticas agrícolas, sino también su organización social e, incluso, sus creencias espirituales.</p>
+        `
+      },
+      {
+        id: "jarmo",
+        title: "Jarmo",
+        content: `
+          <img src="https://placehold.co/800x400/2F4F4F/FFFFFF?text=Sitio+arqueológico+de+Jarmo" alt="Ubicación de Jarmo">
+          <h3>Jarmo</h3>
+          <p>En el Neolítico, este lugar estaba ubicado en un valle llamado Chemchemal, en Irak, en la región del Kurdistán, cerca de los montes Zagros, a una altitud de más o menos 800 metros. Es uno de los primeros sitios donde sabemos que hubo vida sedentaria.</p>
+          <p>Fue ocupado aproximadamente entre el 7400 y el 6000 antes de Cristo, y fue excavado principalmente entre 1948 y 1955. Jarmo nos ofrece una vista crucial de la transición de una vida nómada hacia una forma de vida más sedentaria.</p>
+          <p>Los habitantes de Jarmo fueron de los primeros en cultivar plantas —como cereales— y en domesticar animales. De hecho, podemos asegurar que ya tenían cabras domesticadas. Aprovecharon muy bien un entorno privilegiado: un lugar bien conectado con un río, tierras fértiles y rodeado de bosques, ideal para practicar ganadería y agricultura.</p>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;margin:1.5rem 0;">
+            <div style="flex:1;min-width:200px;background:#f9f3e9;padding:1rem;border-radius:12px;">
+              <strong style="color:#7a5229;">Características principales:</strong>
+              <ul style="margin:0.5rem 0 0 1rem;font-size:0.9rem;">
+                <li>Uno de los primeros asentamientos sedentarios</li>
+                <li>Casas de ladrillos de barro rectilíneas</li>
+                <li>Avances significativos en cerámica hecha a mano</li>
+                <li>Uso de cenizas volcánicas en la cerámica (tono gris oscuro)</li>
+                <li>Enfoque en rituales de fertilidad y ciclos estacionales</li>
+              </ul>
+            </div>
+            <img src="https://placehold.co/400x200/CD853F/FFFFFF?text=Cerámica+temprana+de+Jarmo" alt="Cerámica de Jarmo" style="flex:1;min-width:200px;height:150px;object-fit:cover;border-radius:12px;">
           </div>
-          <img 
-            src="https://placehold.co/400x200/CD853F/FFFFFF?text=Cerámica+temprana+de+Jarmo" 
-            alt="Cerámica de Jarmo" 
-            className="w-full h-48 object-cover rounded-lg"
-          />
-        </div>
-      </div>
-    ),
-    hassuna: (
-      <div className="space-y-6">
-        <img 
-          src="https://placehold.co/800x400/DC143C/FFFFFF?text=Cerámica+Hassuna+-+Negro+sobre+Rojo" 
-          alt="Cerámica Hassuna" 
-          className="w-full h-64 object-cover rounded-lg shadow-md"
-        />
-        <h3 className="text-2xl font-bold text-amber-800">Cultura Hassuna</h3>
-        <p className="text-lg leading-relaxed">
-          La cultura Hassuna representa un fenómeno arqueológico del Neolítico muy significativo en el norte de Mesopotamia. Está ubicada principalmente en lo que hoy es el norte de Irak. Sabemos que existió aproximadamente entre el 6000 y el 5200 a.C.
-        </p>
-        <p className="text-lg leading-relaxed">
-          Esta cultura se caracterizaba por su estilo cerámico muy distintivo: negro sobre rojo. Marcó una transición crucial de la sociedad neolítica pre-cerámica hacia una sociedad sedentaria que ya utilizaba cerámica, con prácticas agrícolas más desarrolladas.
-        </p>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <h4 className="font-semibold text-blue-800 mb-2">Agricultura</h4>
-            <p className="text-sm">Cultivo de cebada y trigo, junto con domesticación de cabras y ovejas.</p>
+        `
+      },
+      {
+        id: "hassuna",
+        title: "Cultura Hassuna",
+        content: `
+          <img src="https://placehold.co/800x400/DC143C/FFFFFF?text=Cerámica+Hassuna+-+Negro+sobre+Rojo" alt="Cerámica Hassuna">
+          <h3>Cultura Hassuna</h3>
+          <p>La cultura Hassuna representa un fenómeno arqueológico del Neolítico muy significativo en el norte de Mesopotamia. Está ubicada principalmente en lo que hoy es el norte de Irak. Sabemos que existió aproximadamente entre el 6000 y el 5200 a.C.</p>
+          <p>Esta cultura se caracterizaba por su estilo cerámico muy distintivo: negro sobre rojo. Marcó una transición crucial de la sociedad neolítica pre-cerámica hacia una sociedad sedentaria que ya utilizaba cerámica, con prácticas agrícolas más desarrolladas.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0;">
+            <div style="background:#fef0f0;padding:1rem;border-radius:12px;">
+              <strong style="color:#dc143c;">Agricultura</strong>
+              <p style="font-size:0.9rem;margin:0.5rem 0;">Cultivo de cebada y trigo, junto con domesticación de cabras y ovejas.</p>
+            </div>
+            <div style="background:#f0fff0;padding:1rem;border-radius:12px;">
+              <strong style="color:#228B22;">Tecnología</strong>
+              <p style="font-size:0.9rem;margin:0.5rem 0;">Producción en hornos de dos cámaras, evolución desde formas crudas a vasijas refinadas.</p>
+            </div>
+            <div style="background:#f8f0ff;padding:1rem;border-radius:12px;">
+              <strong style="color:#9c27b0;">Organización Social</strong>
+              <p style="font-size:0.9rem;margin:0.5rem 0;">Indicios de especialización económica y producción de excedentes.</p>
+            </div>
           </div>
-          <div className="bg-green-50 p-4 rounded-lg">
-            <h4 className="font-semibold text-green-800 mb-2">Tecnología</h4>
-            <p className="text-sm">Producción en hornos de dos cámaras, evolución desde formas crudas a vasijas refinadas.</p>
+          <div style="background:#fff8e1;padding:1.5rem;border-radius:12px;border-left:4px solid #ffb300;margin:1.5rem 0;">
+            <strong style="color:#f57c00;">Estilo Cerámico Distintivo</strong>
+            <p style="margin:0.5rem 0;font-size:0.95rem;">Diseños en negro sobre fondo rojo, patrones geométricos simples, evitando representaciones figurativas. Refleja preferencias estéticas y identidad cultural.</p>
           </div>
-          <div className="bg-purple-50 p-4 rounded-lg">
-            <h4 className="font-semibold text-purple-800 mb-2">Organización Social</h4>
-            <p className="text-sm">Indicios de especialización económica y producción de excedentes.</p>
-          </div>
-        </div>
-        <div className="mt-6 bg-gradient-to-r from-red-100 to-black-100 p-6 rounded-lg border-l-4 border-amber-500">
-          <h4 className="font-bold text-amber-800 mb-3">Estilo Cerámico Distintivo</h4>
-          <p className="text-sm">Diseños en negro sobre fondo rojo, patrones geométricos simples, evitando representaciones figurativas. Refleja preferencias estéticas y identidad cultural.</p>
-        </div>
-      </div>
-    ),
-    samarra: (
-      <div className="space-y-6">
-        <img 
-          src="https://placehold.co/800x400/4B0082/FFFFFF?text=Cerámica+Samarra+-+Intrincados+diseños" 
-          alt="Cerámica Samarra" 
-          className="w-full h-64 object-cover rounded-lg shadow-md"
-        />
-        <h3 className="text-2xl font-bold text-amber-800">Cultura Samarra</h3>
-        <p className="text-lg leading-relaxed">
-          La cultura Samarra introdujo avances tecnológicos en la cerámica tan impresionantes que algunos eruditos afirman que, después de ella, la calidad nunca volvió a ser la misma. Diseños intrincados, hornos sofisticados, patrones geométricos y figuras antropomorfas… piezas que cumplían funciones tanto prácticas como rituales.
-        </p>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-semibold text-gray-800 mb-3">Características Principales:</h4>
-            <ul className="list-disc list-inside space-y-2 text-sm">
-              <li>Técnicas mejoradas de cocción y aplicación de engobes claros</li>
-              <li>Acabados similares al vidriado, con imágenes pictográficas intrincadas</li>
-              <li>Patrones geométricos complejos y figuras antropomorfas</li>
-              <li>Uso de rueda lenta para mayor precisión</li>
-              <li>Representaciones que sugieren narrativas complejas</li>
-            </ul>
-          </div>
-          <div>
-            <img 
-              src="https://placehold.co/400x300/8A2BE2/FFFFFF?text=Diseños+pictográficos+Samarra" 
-              alt="Diseños Samarra" 
-              className="w-full h-48 object-cover rounded-lg mb-4"
-            />
-            <img 
-              src="https://placehold.co/400x150/9370DB/FFFFFF?text=Samarra+clásica+y+tardía" 
-              alt="Periodos Samarra" 
-              className="w-full h-24 object-cover rounded-lg"
-            />
-          </div>
-        </div>
-        <div className="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500">
-          <p className="text-sm italic">"La cerámica Samarra puede dividirse en dos periodos: la Samarra clásica, que coincidió con el periodo de existencia de la cultura Hassuna, y la Samarra tardía. La cerámica más reconocible es la temprana, la clásica."</p>
-        </div>
-      </div>
-    ),
-    halaf: (
-      <div className="space-y-6">
-        <img 
-          src="https://placehold.co/800x400/228B22/FFFFFF?text=Cerámica+Halaf+-+Motivos+geométricos" 
-          alt="Cerámica Halaf" 
-          className="w-full h-64 object-cover rounded-lg shadow-md"
-        />
-        <h3 className="text-2xl font-bold text-amber-800">Cultura Halaf</h3>
-        <p className="text-lg leading-relaxed">
-          La cultura Halaf, que floreció entre 6100 y 5100 a.C., recibe su nombre del sitio arqueológico de Tell Halaf en el noreste de Siria. Esta cultura ocupó principalmente el fértil valle del río Khabur, que atraviesa el sureste de Turquía, Siria y el norte de Irak.
-        </p>
-        <div className="grid md:grid-cols-3 gap-4">
-          <div className="text-center p-4 bg-green-50 rounded-lg">
-            <div className="text-2xl font-bold text-green-800">6100-5100 a.C.</div>
-            <div className="text-sm text-gray-600">Periodo de florecimiento</div>
-          </div>
-          <div className="text-center p-4 bg-green-50 rounded-lg">
-            <div className="text-2xl font-bold text-green-800">Valle del Khabur</div>
-            <div className="text-sm text-gray-600">Región principal</div>
-          </div>
-          <div className="text-center p-4 bg-green-50 rounded-lg">
-            <div className="text-2xl font-bold text-green-800">Rueda Lenta</div>
-            <div className="text-sm text-gray-600">Tecnología clave</div>
-          </div>
-        </div>
-        
-        <div className="mt-6">
-          <h4 className="font-semibold text-gray-800 mb-3">Características de la Cerámica:</h4>
-          <div className="grid md:grid-cols-2 gap-6">
+        `
+      },
+      {
+        id: "samarra",
+        title: "Cultura Samarra",
+        content: `
+          <img src="https://placehold.co/800x400/4B0082/FFFFFF?text=Cerámica+Samarra+-+Intrincados+diseños" alt="Cerámica Samarra">
+          <h3>Cultura Samarra</h3>
+          <p>La cultura Samarra introdujo avances tecnológicos en la cerámica tan impresionantes que algunos eruditos afirman que, después de ella, la calidad nunca volvió a ser la misma. Diseños intrincados, hornos sofisticados, patrones geométricos y figuras antropomorfas… piezas que cumplían funciones tanto prácticas como rituales.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
             <div>
-              <ul className="list-disc list-inside space-y-2 text-sm">
-                <li>Intrincados motivos geométricos y zoomorfos</li>
-                <li>Colores que van desde rojo-marrón hasta verde oscuro</li>
-                <li>Patrones comunes: tramas cruzadas, zigzagues, dientes de sierra y rosetas</li>
-                <li>Decoraciones pintadas vibrantes y variadas</li>
-                <li>Pequeña cantidad de inclusiones minerales y mezclas vegetales</li>
+              <strong>Características Principales:</strong>
+              <ul style="margin:0.5rem 0 0 1rem;font-size:0.9rem;">
+                <li>Técnicas mejoradas de cocción y aplicación de engobes claros</li>
+                <li>Acabados similares al vidriado, con imágenes pictográficas intrincadas</li>
+                <li>Patrones geométricos complejos y figuras antropomorfas</li>
+                <li>Uso de rueda lenta para mayor precisión</li>
+                <li>Representaciones que sugieren narrativas complejas</li>
               </ul>
             </div>
             <div>
-              <img 
-                src="https://placehold.co/400x250/32CD32/FFFFFF?text=Motivos+geométricos+Halaf" 
-                alt="Motivos Halaf" 
-                className="w-full h-32 object-cover rounded-lg mb-2"
-              />
-              <img 
-                src="https://placehold.co/400x150/00FF7F/FFFFFF?text=Casas+circulares+tholos" 
-                alt="Asentamientos Halaf" 
-                className="w-full h-24 object-cover rounded-lg"
-              />
+              <img src="https://placehold.co/400x300/8A2BE2/FFFFFF?text=Diseños+pictográficos+Samarra" alt="Diseños Samarra" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:0.5rem;">
+              <img src="https://placehold.co/400x150/9370DB/FFFFFF?text=Samarra+clásica+y+tardía" alt="Periodos Samarra" style="width:100%;height:80px;object-fit:cover;border-radius:8px;">
             </div>
           </div>
-        </div>
-        
-        <div className="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500">
-          <h5 className="font-semibold text-emerald-800 mb-2">Significado Simbólico</h5>
-          <p className="text-sm">Los motivos artísticos sugieren significados profundos, posiblemente relacionados con identidades clanísticas o sistemas tempranos de conteo. Las imágenes de animales indican una vida espiritual y cultural rica.</p>
-        </div>
-      </div>
-    ),
-    ubaid: (
-      <div className="space-y-6">
-        <img 
-          src="https://placehold.co/800x400/4169E1/FFFFFF?text=Templo+de+Eridu+-+Periodo+Ubaid" 
-          alt="Periodo Ubaid" 
-          className="w-full h-64 object-cover rounded-lg shadow-md"
-        />
-        <h3 className="text-2xl font-bold text-amber-800">Periodo Ubaid</h3>
-        <p className="text-lg leading-relaxed">
-          Durante el período Ubaid, alrededor del 5000 a.C., se empieza a notar un declive constante en la calidad de la cerámica. Las vasijas pierden ese carácter artístico tan cuidado que tenían en culturas anteriores, como la Halaf, y poco a poco se vuelven más simples, más utilitarias.
-        </p>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-semibold text-gray-800 mb-3">Transformación Social:</h4>
-            <ul className="list-disc list-inside space-y-2 text-sm">
-              <li>Aparición de las primeras jerarquías sociales</li>
-              <li>Nacimiento de estructuras burocráticas emergentes</li>
-              <li>Concentración de poder en manos de unos pocos</li>
-              <li>Desarrollo de instituciones religiosas centralizadas</li>
-              <li>Transición hacia sociedades urbanas complejas</li>
+          <div style="background:#e8eaf6;padding:1rem;border-radius:12px;border-left:4px solid #3f51b5;margin:1.5rem 0;">
+            <em>"La cerámica Samarra puede dividirse en dos periodos: la Samarra clásica, que coincidió con el periodo de existencia de la cultura Hassuna, y la Samarra tardía. La cerámica más reconocible es la temprana, la clásica."</em>
+          </div>
+        `
+      },
+      {
+        id: "halaf",
+        title: "Cultura Halaf",
+        content: `
+          <img src="https://placehold.co/800x400/228B22/FFFFFF?text=Cerámica+Halaf+-+Motivos+geométricos" alt="Cerámica Halaf">
+          <h3>Cultura Halaf</h3>
+          <p>La cultura Halaf, que floreció entre 6100 y 5100 a.C., recibe su nombre del sitio arqueológico de Tell Halaf en el noreste de Siria. Esta cultura ocupó principalmente el fértil valle del río Khabur, que atraviesa el sureste de Turquía, Siria y el norte de Irak.</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;text-align:center;margin:1.5rem 0;">
+            <div style="background:#f0fff0;padding:1rem;border-radius:12px;">
+              <div style="font-size:1.5rem;font-weight:bold;color:#228B22;">6100-5100 a.C.</div>
+              <div style="font-size:0.8rem;color:#666;">Periodo de florecimiento</div>
+            </div>
+            <div style="background:#f0fff0;padding:1rem;border-radius:12px;">
+              <div style="font-size:1.5rem;font-weight:bold;color:#228B22;">Valle del Khabur</div>
+              <div style="font-size:0.8rem;color:#666;">Región principal</div>
+            </div>
+            <div style="background:#f0fff0;padding:1rem;border-radius:12px;">
+              <div style="font-size:1.5rem;font-weight:bold;color:#228B22;">Rueda Lenta</div>
+              <div style="font-size:0.8rem;color:#666;">Tecnología clave</div>
+            </div>
+          </div>
+          <h4>Características de la Cerámica:</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+            <ul style="margin:0.5rem 0 0 1rem;font-size:0.9rem;">
+              <li>Intrincados motivos geométricos y zoomorfos</li>
+              <li>Colores que van desde rojo-marrón hasta verde oscuro</li>
+              <li>Patrones comunes: tramas cruzadas, zigzagues, dientes de sierra y rosetas</li>
+              <li>Decoraciones pintadas vibrantes y variadas</li>
+              <li>Pequeña cantidad de inclusiones minerales y mezclas vegetales</li>
             </ul>
+            <div>
+              <img src="https://placehold.co/400x250/32CD32/FFFFFF?text=Motivos+geométricos+Halaf" alt="Motivos Halaf" style="width:100%;height:100px;object-fit:cover;border-radius:8px;margin-bottom:0.5rem;">
+              <img src="https://placehold.co/400x150/00FF7F/FFFFFF?text=Casas+circulares+tholos" alt="Asentamientos Halaf" style="width:100%;height:60px;object-fit:cover;border-radius:8px;">
+            </div>
           </div>
-          <div>
-            <img 
-              src="https://placehold.co/400x200/6495ED/FFFFFF?text=Cerámica+Ubaid+utilitaria" 
-              alt="Cerámica Ubaid" 
-              className="w-full h-32 object-cover rounded-lg mb-4"
-            />
-            <img 
-              src="https://placehold.co/400x150/7B68EE/FFFFFF?text=Eridu+y+templos" 
-              alt="Eridu" 
-              className="w-full h-24 object-cover rounded-lg"
-            />
+          <div style="background:#e8f5e8;padding:1rem;border-radius:12px;border-left:4px solid #4caf50;margin:1.5rem 0;">
+            <strong style="color:#2e7d32;">Significado Simbólico</strong>
+            <p style="margin:0.5rem 0;font-size:0.95rem;">Los motivos artísticos sugieren significados profundos, posiblemente relacionados con identidades clanísticas o sistemas tempranos de conteo. Las imágenes de animales indican una vida espiritual y cultural rica.</p>
           </div>
-        </div>
-        
-        <div className="bg-sky-50 p-6 rounded-lg border-l-4 border-sky-500">
-          <h5 className="font-bold text-sky-800 mb-3">El Cambio Clave</h5>
-          <p className="text-sm">"Mientras las casas particulares siguen siendo bastante simples y uniformes, empiezan a aparecer estructuras muy distintas, mucho más grandes y elaboradas: los templos. Estos no son solo edificios, sino símbolos de poder y religión. Se construyen sobre plataformas de arcilla o piedra y están dedicados al dios Enki, una de las deidades más importantes de la región."</p>
-        </div>
-        
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <h5 className="font-semibold text-blue-800 mb-2">Tecnología y Producción</h5>
-          <p className="text-sm">Aparece el torno de alfarero, lo que ayuda a producir más cerámica de forma más rápida, pero trae una pérdida en la calidad artesanal. La energía y recursos se redirigen de objetos personales hacia proyectos colectivos como la construcción de templos.</p>
-        </div>
-      </div>
-    ),
-    conclusion: (
-      <div className="space-y-6">
-        <img 
-          src="https://placehold.co/800x400/800080/FFFFFF?text=Resumen+culturas+mesopotámicas" 
-          alt="Resumen culturas" 
-          className="w-full h-64 object-cover rounded-lg shadow-md"
-        />
-        <h3 className="text-2xl font-bold text-amber-800">Conclusión</h3>
-        <p className="text-lg leading-relaxed">
-          La cerámica no fue solo una herramienta doméstica. Fue un punto focal en el desarrollo de las civilizaciones mesopotámicas. A través de ella podemos entender cómo pensaban, qué valoraban y cómo se organizaban. Es una ventana directa al alma de estas sociedades antiguas.
-        </p>
-        
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300">
+        `
+      },
+      {
+        id: "ubaid",
+        title: "Periodo Ubaid",
+        content: `
+          <img src="https://placehold.co/800x400/4169E1/FFFFFF?text=Templo+de+Eridu+-+Periodo+Ubaid" alt="Periodo Ubaid">
+          <h3>Periodo Ubaid</h3>
+          <p>Durante el período Ubaid, alrededor del 5000 a.C., se empieza a notar un declive constante en la calidad de la cerámica. Las vasijas pierden ese carácter artístico tan cuidado que tenían en culturas anteriores, como la Halaf, y poco a poco se vuelven más simples, más utilitarias.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+            <div>
+              <strong>Transformación Social:</strong>
+              <ul style="margin:0.5rem 0 0 1rem;font-size:0.9rem;">
+                <li>Aparición de las primeras jerarquías sociales</li>
+                <li>Nacimiento de estructuras burocráticas emergentes</li>
+                <li>Concentración de poder en manos de unos pocos</li>
+                <li>Desarrollo de instituciones religiosas centralizadas</li>
+                <li>Transición hacia sociedades urbanas complejas</li>
+              </ul>
+            </div>
+            <div>
+              <img src="https://placehold.co/400x200/6495ED/FFFFFF?text=Cerámica+Ubaid+utilitaria" alt="Cerámica Ubaid" style="width:100%;height:80px;object-fit:cover;border-radius:8px;margin-bottom:0.5rem;">
+              <img src="https://placehold.co/400x150/7B68EE/FFFFFF?text=Eridu+y+templos" alt="Eridu" style="width:100%;height:60px;object-fit:cover;border-radius:8px;">
+            </div>
+          </div>
+          <div style="background:#e3f2fd;padding:1.5rem;border-radius:12px;border-left:4px solid #2196f3;margin:1.5rem 0;">
+            <strong style="color:#1976d2;">El Cambio Clave</strong>
+            <p style="margin:0.5rem 0;font-size:0.95rem;">"Mientras las casas particulares siguen siendo bastante simples y uniformes, empiezan a aparecer estructuras muy distintas, mucho más grandes y elaboradas: los templos. Estos no son solo edificios, sino símbolos de poder y religión. Se construyen sobre plataformas de arcilla o piedra y están dedicados al dios Enki, una de las deidades más importantes de la región."</p>
+          </div>
+          <div style="background:#bbdefb;padding:1rem;border-radius:12px;">
+            <strong style="color:#0d47a1;">Tecnología y Producción</strong>
+            <p style="margin:0.5rem 0;font-size:0.95rem;">Aparece el torno de alfarero, lo que ayuda a producir más cerámica de forma más rápida, pero trae una pérdida en la calidad artesanal. La energía y recursos se redirigen de objetos personales hacia proyectos colectivos como la construcción de templos.</p>
+          </div>
+        `
+      },
+      {
+        id: "conclusion",
+        title: "Conclusión",
+        content: `
+          <img src="https://placehold.co/800x400/800080/FFFFFF?text=Resumen+culturas+mesopotámicas" alt="Resumen culturas">
+          <h3>Conclusión</h3>
+          <p>La cerámica no fue solo una herramienta doméstica. Fue un punto focal en el desarrollo de las civilizaciones mesopotámicas. A través de ella podemos entender cómo pensaban, qué valoraban y cómo se organizaban. Es una ventana directa al alma de estas sociedades antiguas.</p>
+          <table>
             <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 px-4 py-2">Cultura</th>
-                <th className="border border-gray-300 px-4 py-2">Periodo</th>
-                <th className="border border-gray-300 px-4 py-2">Característica Cerámica</th>
-                <th className="border border-gray-300 px-4 py-2">Significado Social</th>
+              <tr style="background:#f8f9fa;">
+                <th>Cultura</th>
+                <th>Periodo</th>
+                <th>Característica Cerámica</th>
+                <th>Significado Social</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2 font-medium">Jarmo</td>
-                <td className="border border-gray-300 px-4 py-2">7400-6000 a.C.</td>
-                <td className="border border-gray-300 px-4 py-2">Hecha a mano, decorada, tono gris oscuro</td>
-                <td className="border border-gray-300 px-4 py-2">Rituales de fertilidad, vida sedentaria</td>
-              </tr>
-              <tr className="bg-gray-50">
-                <td className="border border-gray-300 px-4 py-2 font-medium">Hassuna</td>
-                <td className="border border-gray-300 px-4 py-2">6000-5200 a.C.</td>
-                <td className="border border-gray-300 px-4 py-2">Negro sobre rojo, diseños geométricos</td>
-                <td className="border border-gray-300 px-4 py-2">Especialización económica, excedentes</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2 font-medium">Samarra</td>
-                <td className="border border-gray-300 px-4 py-2">Paralela a Hassuna</td>
-                <td className="border border-gray-300 px-4 py-2">Diseños intrincados, pictográficos, alta calidad</td>
-                <td className="border border-gray-300 px-4 py-2">Expresión ritual, narrativas complejas</td>
-              </tr>
-              <tr className="bg-gray-50">
-                <td className="border border-gray-300 px-4 py-2 font-medium">Halaf</td>
-                <td className="border border-gray-300 px-4 py-2">6100-5100 a.C.</td>
-                <td className="border border-gray-300 px-4 py-2">Motivos geométricos y zoomorfos, rueda lenta</td>
-                <td className="border border-gray-300 px-4 py-2">Identidad clanística, vida espiritual rica</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2 font-medium">Ubaid</td>
-                <td className="border border-gray-300 px-4 py-2">5000-3800 a.C.</td>
-                <td className="border border-gray-300 px-4 py-2">Utilitaria, simple, producción en masa</td>
-                <td className="border border-gray-300 px-4 py-2">Jerarquías sociales, templos, urbanización</td>
-              </tr>
+              <tr><td><strong>Jarmo</strong></td><td>7400-6000 a.C.</td><td>Hecha a mano, decorada, tono gris oscuro</td><td>Rituales de fertilidad, vida sedentaria</td></tr>
+              <tr style="background:#f9f9f9;"><td><strong>Hassuna</strong></td><td>6000-5200 a.C.</td><td>Negro sobre rojo, diseños geométricos</td><td>Especialización económica, excedentes</td></tr>
+              <tr><td><strong>Samarra</strong></td><td>Paralela a Hassuna</td><td>Diseños intrincados, pictográficos, alta calidad</td><td>Expresión ritual, narrativas complejas</td></tr>
+              <tr style="background:#f9f9f9;"><td><strong>Halaf</strong></td><td>6100-5100 a.C.</td><td>Motivos geométricos y zoomorfos, rueda lenta</td><td>Identidad clanística, vida espiritual rica</td></tr>
+              <tr><td><strong>Ubaid</strong></td><td>5000-3800 a.C.</td><td>Utilitaria, simple, producción en masa</td><td>Jerarquías sociales, templos, urbanización</td></tr>
             </tbody>
           </table>
-        </div>
-        
-        <div className="bg-purple-50 p-6 rounded-lg border-l-4 border-purple-500">
-          <p className="text-lg italic text-center">"La evolución de la cerámica en Mesopotamia refleja claramente la transición de una vida nómada hacia comunidades sedentarias cada vez más complejas, y el paso de sociedades agrarias a sociedades urbanas. Es una historia escrita no con palabras, sino con arcilla y fuego."</p>
-        </div>
-      </div>
-    )
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
-      {/* Header */}
-      <header className="bg-amber-800 text-white shadow-lg">
-        <div className="container mx-auto px-6 py-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-2">Historia Antigua</h1>
-            <h2 className="text-2xl md:text-3xl mb-4">Estudio de las culturas cerámicas del calcolítico y neolítico en Mesopotamia</h2>
-            <p className="text-xl opacity-90">Por Jorge Escoto</p>
-            <div className="mt-4 pt-4 border-t border-amber-600">
-              <p className="text-lg">Profesor Antonio J. Ortiz Villarejo</p>
-            </div>
+          <div style="background:#f3e5f5;padding:1.5rem;border-radius:12px;border-left:4px solid #9c27b0;text-align:center;">
+            <em>"La evolución de la cerámica en Mesopotamia refleja claramente la transición de una vida nómada hacia comunidades sedentarias cada vez más complejas, y el paso de sociedades agrarias a sociedades urbanas. Es una historia escrita no con palabras, sino con arcilla y fuego."</em>
           </div>
-        </div>
-      </header>
+        `
+      }
+    ];
 
-      {/* Navigation */}
-      <nav className="bg-white shadow-md sticky top-0 z-10">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-wrap justify-center gap-2 py-4">
-            {sections.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => setSelectedSection(section.id)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                  selectedSection === section.id
-                    ? "bg-amber-600 text-white shadow-md"
-                    : "bg-gray-100 text-gray-700 hover:bg-amber-100 hover:text-amber-800"
-                }`}
-              >
-                {section.title}
-              </button>
-            ))}
-          </div>
-        </div>
-      </nav>
+    // Generate navigation buttons
+    const navContainer = document.getElementById("nav-container");
+    const dotsContainer = document.getElementById("dots-container");
+    const contentArea = document.getElementById("content-area");
 
-      {/* Main Content */}
-      <main className="container mx-auto px-6 py-8 max-w-4xl">
-        <article className="bg-white rounded-xl shadow-xl p-8 mb-8">
-          {content[selectedSection]}
-        </article>
+    sections.forEach((section, index) => {
+      // Nav button
+      const btn = document.createElement("button");
+      btn.textContent = section.title;
+      btn.onclick = () => setActiveSection(section.id);
+      if (index === 0) btn.classList.add("active");
+      navContainer.appendChild(btn);
 
-        {/* Progress Indicator */}
-        <div className="flex justify-center mt-8">
-          <div className="flex space-x-2">
-            {sections.map((section, index) => (
-              <div
-                key={section.id}
-                className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                  selectedSection === section.id ? "bg-amber-600 scale-110" : "bg-gray-300"
-                }`}
-                title={section.title}
-              />
-            ))}
-          </div>
-        </div>
-      </main>
+      // Progress dot
+      const dot = document.createElement("div");
+      dot.className = index === 0 ? "dot active" : "dot";
+      dot.onclick = () => setActiveSection(section.id);
+      dotsContainer.appendChild(dot);
+    });
 
-      {/* Footer */}
-      <footer className="bg-amber-800 text-white mt-16">
-        <div className="container mx-auto px-6 py-8">
-          <div className="text-center">
-            <p className="text-lg mb-2">© 2025 Estudio Arqueológico de Culturas Mesopotámicas</p>
-            <p className="text-sm opacity-80">Presentación académica - Historia Antigua</p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-};
+    function setActiveSection(id) {
+      // Update content
+      const section = sections.find(s => s.id === id);
+      contentArea.innerHTML = section.content;
 
-export default App;
+      // Update buttons
+      document.querySelectorAll("#nav-container button").forEach(btn => {
+        btn.classList.toggle("active", btn.textContent === section.title);
+      });
+
+      // Update dots
+      document.querySelectorAll(".dot").forEach((dot, i) => {
+        dot.classList.toggle("active", sections[i].id === id);
+      });
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Set initial content
+    setActiveSection("introduccion");
+  </script>
+
+</body>
+</html>
+
